@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perkecil &amp; Jernihkan Foto — Ringkas</title>
+<meta name="description" content="Perkecil ukuran foto dan tajamkan detailnya langsung di browser, tanpa upload ke server." />
+<link rel="stylesheet" href="src/css/theme.css" />
+<link rel="stylesheet" href="src/css/main.css" />
+<link rel="stylesheet" href="src/css/components.css" />
+<link rel="stylesheet" href="src/css/photo.css" />
+</head>
+<body data-page="photo">
+<div class="page">
+  <div id="navbar-mount"></div>
+
+  <main>
+    <div class="container">
+      <div class="tool-header">
+        <h1>Perkecil &amp; Jernihkan Foto</h1>
+        <p>Upload foto kamu, atur ukuran dan ketajamannya, lalu unduh hasilnya. Cocok untuk foto yang terlihat buram atau terlalu besar filenya.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <div id="upload-mount"></div>
+
+          <div id="step-2" hidden>
+            <div class="field" style="margin-top:24px;">
+              <label for="scale-input">Ukuran (dari dimensi asli)</label>
+              <div class="slider-row">
+                <input type="range" id="scale-input" min="10" max="100" value="70" />
+                <output id="scale-output">70%</output>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="sharpen-input">Tingkat kejernihan</label>
+              <div class="slider-row">
+                <input type="range" id="sharpen-input" min="0" max="100" value="20" />
+                <output id="sharpen-output">20%</output>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Format hasil</label>
+              <div class="radio-group">
+                <label class="radio-chip is-active">
+                  <input type="radio" name="photo-format" value="image/jpeg" checked />
+                  JPG
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="photo-format" value="image/webp" />
+                  WebP (lebih kecil)
+                </label>
+              </div>
+            </div>
+
+            <p id="status-text" class="status-text"></p>
+
+            <div style="display:flex; gap:12px; margin-top:8px;">
+              <button id="run-photo-btn" class="btn btn-primary" type="button">Proses Foto</button>
+              <button id="reset-photo-btn" class="btn btn-secondary" type="button">Ganti Foto</button>
+            </div>
+
+            <div id="preview-pair" class="preview-pair" hidden>
+              <figure>
+                <img id="preview-before" alt="Foto sebelum diproses" />
+                <figcaption>Sebelum</figcaption>
+              </figure>
+              <figure>
+                <img id="preview-after" alt="Foto sesudah diproses" />
+                <figcaption>Sesudah</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div id="result-mount"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-mount"></div>
+</div>
+
+<script src="src/components/navbar.js"></script>
+<script src="src/components/footer.js"></script>
+<script src="src/components/uploadBox.js"></script>
+<script src="src/components/resultCard.js"></script>
+
+<script src="src/js/utils/formatBytes.js"></script>
+<script src="src/js/utils/progressBar.js"></script>
+<script src="src/js/utils/themeToggle.js"></script>
+
+<script src="src/js/photo/imageLoader.js"></script>
+<script src="src/js/photo/imageResizer.js"></script>
+<script src="src/js/photo/imageSharpen.js"></script>
+<script src="src/js/photo/imageCompressor.js"></script>
+<script src="src/js/photo/downloadPhotoResult.js"></script>
+<script src="src/js/photo/main-photo.js"></script>
+
+<script src="src/js/main.js"></script>
+</body>
+</html>

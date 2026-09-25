@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Perkecil File MP4 / MP3 — Ringkas</title>
+<meta name="description" content="Kompres video MP4 dan audio MP3 langsung di browser, tanpa upload ke server." />
+<link rel="stylesheet" href="src/css/theme.css" />
+<link rel="stylesheet" href="src/css/main.css" />
+<link rel="stylesheet" href="src/css/components.css" />
+<link rel="stylesheet" href="src/css/compress.css" />
+</head>
+<body data-page="compress">
+<div class="page">
+  <div id="navbar-mount"></div>
+
+  <main>
+    <div class="container">
+      <div class="tool-header">
+        <h1>Perkecil File MP4 / MP3</h1>
+        <p>Upload video atau audio kamu, pilih tingkat kompresi, lalu unduh hasilnya. Kualitas suara dijaga tetap wajar di setiap level.</p>
+      </div>
+
+      <div class="tool-grid">
+        <div class="card">
+          <div id="upload-mount"></div>
+
+          <div id="step-2" hidden>
+            <div id="file-meta"></div>
+
+            <div class="field" style="margin-top:24px;">
+              <label>Tingkat kompresi</label>
+              <div class="radio-group">
+                <label class="radio-chip is-active">
+                  <input type="radio" name="quality-level" value="ringan" />
+                  Ringan
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="quality-level" value="seimbang" checked />
+                  Seimbang
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="quality-level" value="maksimal" />
+                  Maksimal
+                </label>
+              </div>
+              <p class="quality-note">"Seimbang" cocok untuk kebanyakan kebutuhan. Pilih "Maksimal" jika ukuran file adalah prioritas utama.</p>
+            </div>
+
+            <div id="progress-wrap" class="progress" hidden>
+              <div class="progress__bar"></div>
+            </div>
+            <div class="progress__label">
+              <span class="progress__label-text"></span>
+              <span class="progress__label-percent"></span>
+            </div>
+
+            <p id="status-text" class="status-text"></p>
+
+            <div style="display:flex; gap:12px; margin-top:8px;">
+              <button id="run-compress-btn" class="btn btn-primary" type="button">Kompres Sekarang</button>
+              <button id="reset-btn" class="btn btn-secondary" type="button">Ganti File</button>
+            </div>
+          </div>
+
+          <div id="result-mount"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-mount"></div>
+</div>
+
+<!-- ffmpeg.wasm: mesin kompres yang berjalan di browser -->
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+
+<script src="src/components/navbar.js"></script>
+<script src="src/components/footer.js"></script>
+<script src="src/components/uploadBox.js"></script>
+<script src="src/components/resultCard.js"></script>
+
+<script src="src/js/utils/formatBytes.js"></script>
+<script src="src/js/utils/progressBar.js"></script>
+<script src="src/js/utils/themeToggle.js"></script>
+
+<script src="src/js/compress/ffmpegLoader.js"></script>
+<script src="src/js/compress/fileHandler.js"></script>
+<script src="src/js/compress/videoCompressor.js"></script>
+<script src="src/js/compress/audioCompressor.js"></script>
+<script src="src/js/compress/downloadResult.js"></script>
+<script src="src/js/compress/main-compress.js"></script>
+
+<script src="src/js/main.js"></script>
+</body>
+</html>

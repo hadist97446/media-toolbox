@@ -1,0 +1,23 @@
+.tool-header { padding: 56px 0 8px; }
+.tool-header h1 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); }
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  padding-bottom: 72px;
+}
+
+.file-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+.quality-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}

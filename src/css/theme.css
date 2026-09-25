@@ -1,0 +1,57 @@
+/*
+  Palet dirancang supaya nyaman dilihat lama: kertas hijau-abu lembut,
+  bukan putih terang, dengan teks hampir-hitam (bukan hitam pekat).
+  Aksen: teal redup (utama) + terakota debu (sekunder, dipakai tipis).
+*/
+:root {
+  --bg: #F1F3EF;
+  --bg-raised: #FFFFFF;
+  --bg-soft: #E7EAE4;
+  --text-strong: #1E241F;
+  --text: #2B322C;
+  --text-muted: #5B655C;
+  --border: #D6DBD1;
+  --accent: #3F6259;
+  --accent-strong: #2E4B43;
+  --accent-contrast: #F6F8F4;
+  --accent-secondary: #B97A5D;
+  --danger: #B24B3C;
+  --success: #3F6259;
+  --shadow: 0 1px 2px rgba(23, 33, 24, 0.06), 0 8px 24px rgba(23, 33, 24, 0.06);
+}
+
+:root[data-theme="dark"] {
+  --bg: #171C18;
+  --bg-raised: #1F251F;
+  --bg-soft: #222822;
+  --text-strong: #EDEFE9;
+  --text: #DCE0D8;
+  --text-muted: #9BA697;
+  --border: #333B32;
+  --accent: #86B3A3;
+  --accent-strong: #A9CBBD;
+  --accent-contrast: #14201B;
+  --accent-secondary: #D79A7C;
+  --danger: #E08D7C;
+  --success: #86B3A3;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171C18;
+    --bg-raised: #1F251F;
+    --bg-soft: #222822;
+    --text-strong: #EDEFE9;
+    --text: #DCE0D8;
+    --text-muted: #9BA697;
+    --border: #333B32;
+    --accent: #86B3A3;
+    --accent-strong: #A9CBBD;
+    --accent-contrast: #14201B;
+    --accent-secondary: #D79A7C;
+    --danger: #E08D7C;
+    --success: #86B3A3;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+}
