@@ -1,105 +1,656 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Perkecil &amp; Jernihkan Foto — Ringkas</title>
-<meta name="description" content="Perkecil ukuran foto dan tajamkan detailnya langsung di browser, tanpa upload ke server." />
-<link rel="stylesheet" href="src/css/theme.css" />
-<link rel="stylesheet" href="src/css/main.css" />
-<link rel="stylesheet" href="src/css/components.css" />
-<link rel="stylesheet" href="src/css/photo.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pembuatan Kasur</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
 </head>
-<body data-page="photo">
-<div class="page">
-  <div id="navbar-mount"></div>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
-  <main>
-    <div class="container">
-      <div class="tool-header">
-        <h1>Perkecil &amp; Jernihkan Foto</h1>
-        <p>Upload foto kamu, atur ukuran dan ketajamannya, lalu unduh hasilnya. Cocok untuk foto yang terlihat buram atau terlalu besar filenya.</p>
-      </div>
-
-      <div class="tool-grid">
-        <div class="card">
-          <div id="upload-mount"></div>
-
-          <div id="step-2" hidden>
-            <div class="field" style="margin-top:24px;">
-              <label for="scale-input">Ukuran (dari dimensi asli)</label>
-              <div class="slider-row">
-                <input type="range" id="scale-input" min="10" max="100" value="70" />
-                <output id="scale-output">70%</output>
-              </div>
+    <!-- Header Navigation -->
+    <header class="bg-indigo-700 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-indigo-600 rounded-xl shadow-inner">
+                    <i class="fa-solid fa-bed text-2xl text-indigo-200"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Kalkulator Kasur Professional</h1>
+                    <p class="text-xs text-indigo-200">Estimasi Akurat Bahan Kain, Busa & Aksesoris Kasur</p>
+                </div>
             </div>
-
-            <div class="field">
-              <label for="sharpen-input">Tingkat kejernihan</label>
-              <div class="slider-row">
-                <input type="range" id="sharpen-input" min="0" max="100" value="20" />
-                <output id="sharpen-output">20%</output>
-              </div>
-            </div>
-
-            <div class="field">
-              <label>Format hasil</label>
-              <div class="radio-group">
-                <label class="radio-chip is-active">
-                  <input type="radio" name="photo-format" value="image/jpeg" checked />
-                  JPG
-                </label>
-                <label class="radio-chip">
-                  <input type="radio" name="photo-format" value="image/webp" />
-                  WebP (lebih kecil)
-                </label>
-              </div>
-            </div>
-
-            <p id="status-text" class="status-text"></p>
-
-            <div style="display:flex; gap:12px; margin-top:8px;">
-              <button id="run-photo-btn" class="btn btn-primary" type="button">Proses Foto</button>
-              <button id="reset-photo-btn" class="btn btn-secondary" type="button">Ganti Foto</button>
-            </div>
-
-            <div id="preview-pair" class="preview-pair" hidden>
-              <figure>
-                <img id="preview-before" alt="Foto sebelum diproses" />
-                <figcaption>Sebelum</figcaption>
-              </figure>
-              <figure>
-                <img id="preview-after" alt="Foto sesudah diproses" />
-                <figcaption>Sesudah</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <div id="result-mount"></div>
+            <button id="btnResetHeader" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-3 rounded-lg transition duration-200 flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-rotate-left"></i> Reset Form
+            </button>
         </div>
-      </div>
-    </div>
-  </main>
+    </header>
 
-  <div id="footer-mount"></div>
-</div>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: Input Panel -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Form Input Dimensi & Parameter -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-100/70 border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <h2 class="font-semibold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-ruler-combined text-indigo-600"></i> Dimensi & Spesifikasi Kasur
+                        </h2>
+                        <span class="text-xs px-2.5 py-1 bg-indigo-100 text-indigo-700 font-medium rounded-full">Input Parameter</span>
+                    </div>
 
-<script src="src/components/navbar.js"></script>
-<script src="src/components/footer.js"></script>
-<script src="src/components/uploadBox.js"></script>
-<script src="src/components/resultCard.js"></script>
+                    <div class="p-6 space-y-5">
 
-<script src="src/js/utils/formatBytes.js"></script>
-<script src="src/js/utils/progressBar.js"></script>
-<script src="src/js/utils/themeToggle.js"></script>
+                        <!-- Dimensi Kasur -->
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">1. Dimensi Kasur Target</h3>
+                            
+                            <!-- Panjang Kasur -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Panjang Kasur (P)</label>
+                                <div class="flex rounded-lg shadow-sm">
+                                    <input type="number" id="panjangKasur" step="0.01" value="3.0" min="0.1" class="w-full rounded-l-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                    <select id="unitPanjang" class="rounded-r-lg border-slate-300 border-l-0 border bg-slate-50 p-2.5 text-sm font-medium text-slate-600 focus:ring-2 focus:ring-indigo-500">
+                                        <option value="m" selected>Meter (m)</option>
+                                        <option value="cm">Centimeter (cm)</option>
+                                    </select>
+                                </div>
+                            </div>
 
-<script src="src/js/photo/imageLoader.js"></script>
-<script src="src/js/photo/imageResizer.js"></script>
-<script src="src/js/photo/imageSharpen.js"></script>
-<script src="src/js/photo/imageCompressor.js"></script>
-<script src="src/js/photo/downloadPhotoResult.js"></script>
-<script src="src/js/photo/main-photo.js"></script>
+                            <!-- Lebar Kasur -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Lebar Kasur (L)</label>
+                                <div class="flex rounded-lg shadow-sm">
+                                    <input type="number" id="lebarKasur" step="0.01" value="2.0" min="0.1" class="w-full rounded-l-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                    <select id="unitLebar" class="rounded-r-lg border-slate-300 border-l-0 border bg-slate-50 p-2.5 text-sm font-medium text-slate-600 focus:ring-2 focus:ring-indigo-500">
+                                        <option value="m" selected>Meter (m)</option>
+                                        <option value="cm">Centimeter (cm)</option>
+                                    </select>
+                                </div>
+                            </div>
 
-<script src="src/js/main.js"></script>
+                            <!-- Tebal / Tinggi Kasur -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Tinggi / Tebal Kasur (T)</label>
+                                <div class="flex rounded-lg shadow-sm">
+                                    <input type="number" id="tebalKasur" step="0.01" value="0.5" min="0.01" class="w-full rounded-l-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                    <select id="unitTebal" class="rounded-r-lg border-slate-300 border-l-0 border bg-slate-50 p-2.5 text-sm font-medium text-slate-600 focus:ring-2 focus:ring-indigo-500">
+                                        <option value="m" selected>Meter (m)</option>
+                                        <option value="cm">Centimeter (cm)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-200 my-4">
+
+                        <!-- Parameter Fabric / Kain -->
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">2. Spesifikasi Bahan Kain</h3>
+                            
+                            <!-- Lebar Roll Kain -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Lebar Roll Kain yang Dibeli</label>
+                                <select id="lebarKainRoll" class="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white">
+                                    <option value="1.4">1.4 Meter (140 cm) - Standar Sarung/Upholstery</option>
+                                    <option value="1.5">1.5 Meter (150 cm) - Standar Medium</option>
+                                    <option value="2.0">2.0 Meter (200 cm) - Kain Sprei/Sprei Lebar</option>
+                                    <option value="2.4" selected>2.4 Meter (240 cm) - Extra Wide Bedding Roll</option>
+                                </select>
+                            </div>
+
+                            <!-- Kampuh Jahitan (Seam Allowance) -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Toleransi Kampuh Jahitan (Per Sisi)</label>
+                                <div class="flex rounded-lg shadow-sm">
+                                    <input type="number" id="kampuhJahitan" value="2.5" min="0" step="0.5" class="w-full rounded-l-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+                                    <span class="inline-flex items-center px-3 rounded-r-lg border border-l-0 border-slate-300 bg-slate-50 text-slate-500 text-sm font-medium">cm</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1">Ditambahkan ke setiap tepi pola potongan untuk kelim jahitan.</p>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-200 my-4">
+
+                        <!-- Parameter Busa -->
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">3. Spesifikasi Lembaran Busa Stok</h3>
+                            
+                            <!-- Ukuran Stok Busa Pasaran -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Ukuran Blok / Sheet Busa Standar</label>
+                                <select id="ukuranStokBusa" class="w-full rounded-lg border-slate-300 border p-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white">
+                                    <option value="200x100x10">200 cm x 100 cm (Tebal 10 cm)</option>
+                                    <option value="200x120x10">200 cm x 120 cm (Tebal 10 cm)</option>
+                                    <option value="200x160x10">200 cm x 160 cm (Tebal 10 cm)</option>
+                                    <option value="200x200x10" selected>200 cm x 200 cm (Tebal 10 cm)</option>
+                                    <option value="200x200x20">200 cm x 200 cm (Tebal 20 cm)</option>
+                                    <option value="custom">Custom Ukuran Busa...</option>
+                                </select>
+                            </div>
+
+                            <!-- Custom Busa Input (Hidden by default) -->
+                            <div id="customBusaWrapper" class="grid grid-cols-3 gap-2 hidden p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <div>
+                                    <label class="text-[11px] text-slate-500 block">P (cm)</label>
+                                    <input type="number" id="customBusaP" value="200" class="w-full border rounded p-1 text-xs">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-slate-500 block">L (cm)</label>
+                                    <input type="number" id="customBusaL" value="100" class="w-full border rounded p-1 text-xs">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-slate-500 block">T (cm)</label>
+                                    <input type="number" id="customBusaT" value="10" class="w-full border rounded p-1 text-xs">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Results & Visualization -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Ringkasan Kebutuhan Utama (Cards) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Card Kain -->
+                    <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-5 text-white shadow-md relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 text-white">
+                            <i class="fa-solid fa-scissors text-9xl"></i>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-indigo-200 uppercase font-bold tracking-wider">Total Kain Dibutuhkan</p>
+                                <h3 id="resTotalPanjangKain" class="text-3xl font-extrabold mt-1">0 Meter</h3>
+                                <p id="resLebarRollDesc" class="text-xs text-indigo-100 mt-1">Roll Lebar: 2.4 m</p>
+                            </div>
+                            <span class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                <i class="fa-solid fa-scroll text-xl"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-indigo-400/30 flex justify-between text-xs">
+                            <span>Luas Pola Total:</span>
+                            <span id="resLuasKainM2" class="font-bold">0 m²</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Busa -->
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 rounded-2xl p-5 text-white shadow-md relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 text-white">
+                            <i class="fa-solid fa-cube text-9xl"></i>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-emerald-200 uppercase font-bold tracking-wider">Estimasi Lembar Busa</p>
+                                <h3 id="resJumlahLembarBusa" class="text-3xl font-extrabold mt-1">0 Lembar</h3>
+                                <p id="resUkuranBusaDesc" class="text-xs text-emerald-100 mt-1">Ukuran Standard: 200x200x10 cm</p>
+                            </div>
+                            <span class="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
+                                <i class="fa-solid fa-cubes text-xl"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-emerald-400/30 flex justify-between text-xs">
+                            <span>Volume Kasur:</span>
+                            <span id="resVolumeBusa" class="font-bold">0 m³</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Perhitungan Pola Kain (Kover Kasur) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-100/70 border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <h2 class="font-semibold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-vector-square text-indigo-600"></i> Rincian Pemotongan Kain Kover
+                        </h2>
+                        <span class="text-xs text-slate-500 font-medium">+ Kampuh Jahitan <span id="resKampuhBadge">2.5</span> cm</span>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <!-- Pola Atas & Alas -->
+                            <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">1</div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-slate-800">Bagian Atas & Alas Kasur (2 Lembar)</h4>
+                                        <p class="text-xs text-slate-500">Ukuran Bersih + Kampuh Jahitan</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p id="resDimensiAtasAlas" class="text-sm font-bold text-slate-700">0 cm x 0 cm</p>
+                                    <p id="resLuasAtasAlas" class="text-xs text-slate-500">2 x 0 m²</p>
+                                </div>
+                            </div>
+
+                            <!-- Pola Dinding Samping / Zipper Border -->
+                            <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">2</div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-slate-800">Dinding Samping / Lis Keliling (Border)</h4>
+                                        <p class="text-xs text-slate-500">Keliling Kasur x (Tinggi Kasur + Kampuh)</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p id="resDimensiDinding" class="text-sm font-bold text-slate-700">0 cm x 0 cm</p>
+                                    <p id="resPanjangKeliling" class="text-xs text-slate-500">Keliling: 0 m</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skema Pemotongan visual -->
+                        <div class="mt-6">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Visual Orientasi Bentangan Kain</h4>
+                            <div class="bg-slate-900 rounded-xl p-4 text-white font-mono text-xs overflow-x-auto">
+                                <div class="flex justify-between text-slate-400 border-b border-slate-700 pb-2 mb-3">
+                                    <span>Lebar Roll: <span id="visRollWidth" class="text-indigo-400">2.4m</span></span>
+                                    <span>Estimasi Efisiensi: <span id="visEfisiensi" class="text-emerald-400">Optimal</span></span>
+                                </div>
+                                <div id="visDiagramContainer" class="space-y-2">
+                                    <!-- Diagram layout generated by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Detail Konstruksi Busa -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-100/70 border-b border-slate-200 px-6 py-4">
+                        <h2 class="font-semibold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-emerald-600"></i> Detail Penyambungan & Penumpukan Busa
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                                <p class="text-xs text-emerald-700 font-semibold mb-1"><i class="fa-solid fa-arrows-up-down"></i> Penumpukan Vertikal (Lapisan Tebal)</p>
+                                <p id="resPenumpukanTebal" class="text-sm font-bold text-slate-800">0 Penumpukan</p>
+                                <p class="text-xs text-slate-500 mt-1">Menggunakan busa tebal <span id="resTebalStokUnit">10</span> cm untuk mencapai tebal <span id="resTebalTargetUnit">50</span> cm.</p>
+                            </div>
+                            <div class="p-4 bg-teal-50/50 rounded-xl border border-teal-100">
+                                <p class="text-xs text-teal-700 font-semibold mb-1"><i class="fa-solid fa-arrows-left-right"></i> Sambungan Horizontal (Bidang)</p>
+                                <p id="resSambunganHorisontal" class="text-sm font-bold text-slate-800">0 Sambungan</p>
+                                <p class="text-xs text-slate-500 mt-1">Penyesuaian lembar busa standar ke ukuran target (<span id="resDimensiTargetStr">3m x 2m</span>).</p>
+                            </div>
+                        </div>
+
+                        <div id="busaWarningBox" class="hidden p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500 text-base mt-0.5"></i>
+                            <div>
+                                <span class="font-bold">Catatan Penyambungan Busa:</span>
+                                <span id="busaWarningText">Ukuran kasur memerlukan penyambungan lembaran busa menggunakan lem khusus busa (foam adhesive).</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Belanja Material & Estimasi Pendukung -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-100/70 border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <h2 class="font-semibold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-cart-flatbed text-indigo-600"></i> Ringkasan Daftar Belanja Material
+                        </h2>
+                        <button id="btnPrint" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-1.5 px-3 rounded-lg transition duration-200">
+                            <i class="fa-solid fa-print"></i> Cetak / Simpan
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm border-collapse">
+                                <thead>
+                                    <tr class="border-b border-slate-200 text-xs font-semibold text-slate-400 uppercase">
+                                        <th class="py-2.5 px-2">Item Material</th>
+                                        <th class="py-2.5 px-2">Spesifikasi Target</th>
+                                        <th class="py-2.5 px-2 text-right">Jumlah Kebutuhan</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="py-3 px-2 font-medium text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-scroll text-indigo-500"></i> Kain Kover Kasur
+                                        </td>
+                                        <td class="py-3 px-2 text-slate-500 text-xs" id="tableKainSpec">Lebar Roll 2.4 m</td>
+                                        <td class="py-3 px-2 text-right font-bold text-slate-800" id="tableKainQty">0 Meter</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-2 font-medium text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-cube text-emerald-500"></i> Busa Lembaran
+                                        </td>
+                                        <td class="py-3 px-2 text-slate-500 text-xs" id="tableBusaSpec">200x200x10 cm</td>
+                                        <td class="py-3 px-2 text-right font-bold text-slate-800" id="tableBusaQty">0 Lembar</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-2 font-medium text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-zipper text-amber-500"></i> Resleting / Zipper Keliling
+                                        </td>
+                                        <td class="py-3 px-2 text-slate-500 text-xs">Model U-Shape / Keliling Dinding</td>
+                                        <td class="py-3 px-2 text-right font-bold text-slate-800" id="tableZipperQty">0 Meter</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-2 font-medium text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-bottle-droplet text-orange-500"></i> Lem Busa (Foam Glue)
+                                        </td>
+                                        <td class="py-3 px-2 text-slate-500 text-xs">Untuk penyambungan & penumpukan</td>
+                                        <td class="py-3 px-2 text-right font-bold text-slate-800" id="tableGlueQty">0 Kaleng / Liter</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-2 font-medium text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-spaghetti-monster-flying text-sky-500"></i> Benang Jahit Heavy Duty
+                                        </td>
+                                        <td class="py-3 px-2 text-slate-500 text-xs">Nylon / Polyester Upholstery</td>
+                                        <td class="py-3 px-2 text-right font-bold text-slate-800">1 - 2 Roll</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- App Logic Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const panjangKasurInput = document.getElementById('panjangKasur');
+            const unitPanjangSelect = document.getElementById('unitPanjang');
+            const lebarKasurInput = document.getElementById('lebarKasur');
+            const unitLebarSelect = document.getElementById('unitLebar');
+            const tebalKasurInput = document.getElementById('tebalKasur');
+            const unitTebalSelect = document.getElementById('unitTebal');
+
+            const lebarKainRollSelect = document.getElementById('lebarKainRoll');
+            const kampuhJahitanInput = document.getElementById('kampuhJahitan');
+
+            const ukuranStokBusaSelect = document.getElementById('ukuranStokBusa');
+            const customBusaWrapper = document.getElementById('customBusaWrapper');
+            const customBusaPInput = document.getElementById('customBusaP');
+            const customBusaLInput = document.getElementById('customBusaL');
+            const customBusaTInput = document.getElementById('customBusaT');
+
+            const btnResetHeader = document.getElementById('btnResetHeader');
+            const btnPrint = document.getElementById('btnPrint');
+
+            // Toggle custom busa inputs
+            ukuranStokBusaSelect.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customBusaWrapper.classList.remove('hidden');
+                } else {
+                    customBusaWrapper.classList.add('hidden');
+                }
+                calculateAll();
+            });
+
+            // Convert to meters
+            function getInMeters(value, unit) {
+                const num = parseFloat(value) || 0;
+                return unit === 'cm' ? num / 100 : num;
+            }
+
+            // Calculation Core Logic
+            function calculateAll() {
+                // 1. Get Mattress Dimensions in meters
+                const pM = getInMeters(panjangKasurInput.value, unitPanjangSelect.value);
+                const lM = getInMeters(lebarKasurInput.value, unitLebarSelect.value);
+                const tM = getInMeters(tebalKasurInput.value, unitTebalSelect.value);
+
+                // Convert to cm for easy internal calculation
+                const pCm = pM * 100;
+                const lCm = lM * 100;
+                const tCm = tM * 100;
+
+                const kampuhCm = parseFloat(kampuhJahitanInput.value) || 0;
+                const lebarRollM = parseFloat(lebarKainRollSelect.value) || 1.4;
+                const lebarRollCm = lebarRollM * 100;
+
+                // --- FABRIC / KAIN CALCULATION ---
+                // Continuous / Pola Pattern
+                // Pattern 1: Top & Bottom panel (2 pieces) -> Dimensi per pcs: (pCm + 2*kampuh) x (lCm + 2*kampuh)
+                const panelPCm = pCm + (2 * kampuhCm);
+                const panelLCm = lCm + (2 * kampuhCm);
+
+                // Pattern 2: Side Wall / Zipper Border (Dinding Samping)
+                // Keliling kasur = 2 * (P + L)
+                const kelilingCm = 2 * (pCm + lCm);
+                const kelilingM = kelilingCm / 100;
+                const tinggiDindingCm = tCm + (2 * kampuhCm);
+
+                // Calculate required fabric linear meters based on roll width
+                // Layout strategies for Fabric:
+                // Option A: Panel aligned vertically along roll length
+                // Check how many panels fit in width roll
+                let totalPanjangKainM = 0;
+
+                // Simple layout algorithm:
+                // 1. Top panel length
+                // 2. Bottom panel length
+                // 3. Side wall strips length
+
+                // Case: If panelLCm <= lebarRollCm (Fit standard layout)
+                if (panelLCm <= lebarRollCm) {
+                    // Panel 1 & 2 stacked lengthwise
+                    let lengthPanels = (panelPCm * 2) / 100;
+                    
+                    // Side wall strip: total length kelilingCm + kampuh. Width is tinggiDindingCm.
+                    // How many strips of tinggiDindingCm can we get per width of roll?
+                    const stripsInWidth = Math.floor(lebarRollCm / tinggiDindingCm);
+                    let lengthDinding = 0;
+
+                    if (stripsInWidth >= 1) {
+                        // Strips run along length
+                        const totalStripsNeeded = Math.ceil((kelilingCm + 10) / panelPCm); // Approximate standard strips
+                        lengthDinding = Math.ceil(kelilingCm / 100);
+                    } else {
+                        // Height of wall exceeds width (rare for mattress, but safety check)
+                        lengthDinding = (kelilingCm / 100);
+                    }
+
+                    // Optimized estimation based on cutting pattern
+                    // Total linear meters needed: (Top & Bottom) + Side strips
+                    // Side strips can often be cut from leftover side width of panels if panelLCm < lebarRollCm!
+                    const sisaLebarRoll = lebarRollCm - panelLCm;
+                    if (sisaLebarRoll >= tinggiDindingCm) {
+                        // Dinding can be taken from leftover width of top/bottom panels!
+                        totalPanjangKainM = lengthPanels; 
+                    } else {
+                        // Need extra length for side wall
+                        totalPanjangKainM = lengthPanels + (tinggiDindingCm / 100);
+                        if (lebarRollCm < 2.0) {
+                            // On narrow rolls, side wall needs separate length segment
+                            totalPanjangKainM = lengthPanels + Math.ceil(kelilingCm / 100) * (tinggiDindingCm / 100);
+                        }
+                    }
+                } else {
+                    // Kasur lebih lebar dari roll kain! Misal Kasur Lebar 2m (panel 2.05m), Roll 1.4m.
+                    // Harus dipotong memanjang/disambung.
+                    const piecesPerPanel = Math.ceil(panelLCm / lebarRollCm);
+                    totalPanjangKainM = (panelPCm / 100) * piecesPerPanel * 2 + (tinggiDindingCm / 100) * 2;
+                }
+
+                // Add 5% safety margin for cutting alignment
+                totalPanjangKainM = totalPanjangKainM * 1.05;
+
+                // Total fabric area
+                const luasKainM2 = ((panelPCm * panelLCm * 2) + (kelilingCm * tinggiDindingCm)) / 10000;
+
+                // --- BUSA CALCULATION ---
+                let busaP = 200, busaL = 200, busaT = 10;
+
+                if (ukuranStokBusaSelect.value === 'custom') {
+                    busaP = parseFloat(customBusaPInput.value) || 200;
+                    busaL = parseFloat(customBusaLInput.value) || 100;
+                    busaT = parseFloat(customBusaTInput.value) || 10;
+                } else {
+                    const parts = ukuranStokBusaSelect.value.split('x');
+                    busaP = parseFloat(parts[0]);
+                    busaL = parseFloat(parts[1]);
+                    busaT = parseFloat(parts[2]);
+                }
+
+                // Volume Kasur
+                const volumeM3 = pM * lM * tM;
+
+                // Count vertical layers (Penumpukan Tebal)
+                const penumpukanVertikal = Math.ceil(tCm / busaT);
+
+                // Count horizontal grid blocks per layer
+                const lembarPanjang = Math.ceil(pCm / busaP);
+                const lembarLebar = Math.ceil(lCm / busaL);
+                const lembarPerLapisan = lembarPanjang * lembarLebar;
+
+                const totalLembarBusa = penumpukanVertikal * lembarPerLapisan;
+                const sambunganHorizontal = (lembarPanjang > 1 || lembarLebar > 1);
+
+                // --- UPDATE UI ---
+                // Cards
+                document.getElementById('resTotalPanjangKain').textContent = `${totalPanjangKainM.toFixed(1)} Meter`;
+                document.getElementById('resLebarRollDesc').textContent = `Roll Lebar: ${lebarRollM} m (${lebarRollCm} cm)`;
+                document.getElementById('resLuasKainM2').textContent = `${luasKainM2.toFixed(2)} m²`;
+
+                document.getElementById('resJumlahLembarBusa').textContent = `${totalLembarBusa} Lembar`;
+                document.getElementById('resUkuranBusaDesc').textContent = `Stok: ${busaP}x${busaL}x${busaT} cm`;
+                document.getElementById('resVolumeBusa').textContent = `${volumeM3.toFixed(2)} m³`;
+
+                // Detailed Cut Pattern
+                document.getElementById('resKampuhBadge').textContent = kampuhCm;
+                document.getElementById('resDimensiAtasAlas').textContent = `${panelPCm.toFixed(1)} cm x ${panelLCm.toFixed(1)} cm`;
+                document.getElementById('resLuasAtasAlas').textContent = `2 Pcs x ${((panelPCm * panelLCm)/10000).toFixed(2)} m²`;
+                
+                document.getElementById('resDimensiDinding').textContent = `${kelilingCm.toFixed(0)} cm x ${tinggiDindingCm.toFixed(1)} cm`;
+                document.getElementById('resPanjangKeliling').textContent = `Keliling total: ${kelilingM.toFixed(2)} m`;
+
+                // Foam details
+                document.getElementById('resPenumpukanTebal').textContent = `${penumpukanVertikal} Lapis (${penumpukanVertikal * busaT} cm Total)`;
+                document.getElementById('resTebalStokUnit').textContent = busaT;
+                document.getElementById('resTebalTargetUnit').textContent = tCm;
+
+                document.getElementById('resSambunganHorisontal').textContent = sambunganHorizontal 
+                    ? `Perlu Sambungan (${lembarPanjang}x${lembarLebar} Grid)` 
+                    : 'Tanpa Sambungan Horizontal (1 Lembar Utuh Per Lapis)';
+                document.getElementById('resDimensiTargetStr').textContent = `${pM}m x ${lM}m x ${tM}m`;
+
+                const busaWarningBox = document.getElementById('busaWarningBox');
+                if (sambunganHorizontal || penumpukanVertikal > 1) {
+                    busaWarningBox.classList.remove('hidden');
+                    let msg = [];
+                    if (penumpukanVertikal > 1) msg.push(`Menumpuk ${penumpukanVertikal} lapisan busa`);
+                    if (sambunganHorizontal) msg.push(`Menyambung ${lembarPerLapisan} blok busa per lapisan`);
+                    document.getElementById('busaWarningText').textContent = `Kasur ini memerlukan ${msg.join(' dan ')}. Gunakan lem busa aerosol/semprot agar rekat sempurna.`;
+                } else {
+                    busaWarningBox.classList.add('hidden');
+                }
+
+                // Visual Diagram Update
+                document.getElementById('visRollWidth').textContent = `${lebarRollM}m (${lebarRollCm}cm)`;
+                const visContainer = document.getElementById('visDiagramContainer');
+                
+                let efisiensi = panelLCm <= lebarRollCm ? "Tinggi (Tanpa Sambungan Panel)" : "Sedang (Panel Perlu Sambungan)";
+                document.getElementById('visEfisiensi').textContent = efisiensi;
+
+                visContainer.innerHTML = `
+                    <div class="border border-dashed border-indigo-500/50 p-2 rounded bg-indigo-950/40">
+                        <div class="text-indigo-300 font-bold mb-1">[Potongan 1] Panel Atas Kasur</div>
+                        <div>Ukuran: ${panelPCm.toFixed(1)} cm x ${panelLCm.toFixed(1)} cm</div>
+                    </div>
+                    <div class="border border-dashed border-indigo-500/50 p-2 rounded bg-indigo-950/40">
+                        <div class="text-indigo-300 font-bold mb-1">[Potongan 2] Panel Alas Kasur</div>
+                        <div>Ukuran: ${panelPCm.toFixed(1)} cm x ${panelLCm.toFixed(1)} cm</div>
+                    </div>
+                    <div class="border border-dashed border-emerald-500/50 p-2 rounded bg-emerald-950/40">
+                        <div class="text-emerald-300 font-bold mb-1">[Potongan 3] Dinding Samping / Zipper Border</div>
+                        <div>Ukuran Strip: Keliling ${kelilingCm.toFixed(0)} cm x Tinggi ${tinggiDindingCm.toFixed(1)} cm</div>
+                    </div>
+                `;
+
+                // Shopping List Table
+                document.getElementById('tableKainSpec').textContent = `Lebar Roll ${lebarRollM} m (${lebarRollCm} cm)`;
+                document.getElementById('tableKainQty').textContent = `${totalPanjangKainM.toFixed(1)} Meter`;
+
+                document.getElementById('tableBusaSpec').textContent = `${busaP} x ${busaL} x ${busaT} cm`;
+                document.getElementById('tableBusaQty').textContent = `${totalLembarBusa} Lembar`;
+
+                // Zipper length: around 3 sides or full perimeter
+                const zipperQtyM = (kelilingM + 0.5).toFixed(1);
+                document.getElementById('tableZipperQty').textContent = `${zipperQtyM} Meter`;
+
+                // Glue estimation: ~1 can per 2-3 sheets combined
+                const glueQty = Math.max(1, Math.ceil(totalLembarBusa / 2));
+                document.getElementById('tableGlueQty').textContent = `${glueQty} Kaleng/Kaleng Semprot`;
+            }
+
+            // Event Listeners for Live Calculation
+            const inputs = [
+                panjangKasurInput, unitPanjangSelect,
+                lebarKasurInput, unitLebarSelect,
+                tebalKasurInput, unitTebalSelect,
+                lebarKainRollSelect, kampuhJahitanInput,
+                ukuranStokBusaSelect, customBusaPInput, customBusaLInput, customBusaTInput
+            ];
+
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+                input.addEventListener('change', calculateAll);
+            });
+
+            // Reset Button
+            btnResetHeader.addEventListener('click', function() {
+                panjangKasurInput.value = "3.0";
+                unitPanjangSelect.value = "m";
+                lebarKasurInput.value = "2.0";
+                unitLebarSelect.value = "m";
+                tebalKasurInput.value = "0.5";
+                unitTebalSelect.value = "m";
+                lebarKainRollSelect.value = "2.4";
+                kampuhJahitanInput.value = "2.5";
+                ukuranStokBusaSelect.value = "200x200x10";
+                customBusaWrapper.classList.add('hidden');
+                calculateAll();
+            });
+
+            // Print Button
+            btnPrint.addEventListener('click', function() {
+                window.print();
+            });
+
+            // Initial calculation on load
+            calculateAll();
+        });
+    </script>
 </body>
 </html>
